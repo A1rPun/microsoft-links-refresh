@@ -2,33 +2,33 @@
 
 namespace A1rPun\MicrosoftLinksRefresh;
 
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpFoundation\Response;
 
-class MicrosoftLinksRefresh
+class MicrosoftLinksRefresh implements EventSubscriberInterface
 {
-    const USER_AGENTS_REGEX = "/[^\w](Word|Excel|PowerPoint|ms-office|Konqueror.+KIO)([^\w]|\z)/";
+    const USER_AGENTS_REGEX = "/(Word|Excel|PowerPoint|ms-office)/";
     const EXCLUDE_USER_AGENTS_REGEX = "/Microsoft Outlook/";
+    const REFRESH_RESPONSE = '<html><head><meta http-equiv="refresh" content="0"/></head><body></body></html>';
 
-    public function init(): void
+    public function onKernelRequest(GetResponseEvent $event)
     {
-        // Register component
-    }
+        $request = $event->getRequest();
+        $userAgent = $request->headers->get('User-Agent');
 
-    public function matching_user_agent(string $user_agent): bool
-    {
-        return preg_match(self::USER_AGENTS_REGEX, $user_agent) && !preg_match(self::EXCLUDE_USER_AGENTS_REGEX, $user_agent);
-    }
-
-    public function handle(): Response
-    {
-        $user_agent = 'Microsoft Outlook';
-        if (self->matching_user_agent($user_agent)) {
-            // If user agent is office app, refresh page
-            $responseBody = "<html><head><meta http-equiv='refresh' content='0'/></head><body></body></html>";
-            return new Response([
-                'message' => $responseBody
-            ]);
+        if (self::matchesUserAgent($userAgent)) {
+            $event->setResponse(new Response(self::REFRESH_RESPONSE), 200);
         }
+    }
+    
+    public static function getSubscribedEvents()
+    {
+        return array('kernel.request' => 'onKernelRequest');
+    }
+    
+    private function matchesUserAgent(string $userAgent): bool
+    {
+        return preg_match(self::USER_AGENTS_REGEX, $userAgent) && !preg_match(self::EXCLUDE_USER_AGENTS_REGEX, $userAgent);
     }
 }
