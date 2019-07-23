@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MicrosoftLinksRefresh implements EventSubscriberInterface
 {
-    const USER_AGENTS_REGEX = "/(Word|Excel|PowerPoint|ms-office)/";
-    const EXCLUDE_USER_AGENTS_REGEX = "/Microsoft Outlook/";
-    const REFRESH_RESPONSE = '<html><head><meta http-equiv="refresh" content="0"/></head><body></body></html>';
+    private const USER_AGENTS_REGEX = "/(Word|Excel|PowerPoint|ms-office)/";
+    private const EXCLUDE_USER_AGENTS_REGEX = "/Microsoft Outlook/";
+    private const REFRESH_RESPONSE = '<html><head><meta http-equiv="refresh" content="0"/></head><body></body></html>';
 
     public function onKernelRequest(GetResponseEvent $event)
     {
