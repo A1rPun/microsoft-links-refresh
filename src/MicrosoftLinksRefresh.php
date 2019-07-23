@@ -1,6 +1,6 @@
 <?php
 
-namespace A1rPun\MicrosoftLinksRefresh;
+namespace A1rPun;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -18,7 +18,7 @@ class MicrosoftLinksRefresh implements EventSubscriberInterface
         $userAgent = $request->headers->get('User-Agent');
 
         if (self::matchesUserAgent($userAgent)) {
-            $event->setResponse(new Response(self::REFRESH_RESPONSE), 200);
+            $event->setResponse(new Response(self::REFRESH_RESPONSE), 200, ['Content-Type' => 'text/html']);
         }
     }
     

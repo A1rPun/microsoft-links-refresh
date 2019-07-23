@@ -51,8 +51,9 @@ microsoft_links_refresh:
 ```
 
 **3. What happens next?**
+
 The request was discarded initially, now the browser refreshes the page and sends the correct headers like a normal click would do.
 
-## License
+##  :page_with_curl: License
 
 MIT, see LICENSE.

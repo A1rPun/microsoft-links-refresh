@@ -2,6 +2,7 @@
   "name": "a1rpun/microsoft-links-refresh",
   "description": "Fixes redirects to login pages when a user clicks a link to your site from a Microsoft application like Word or Excel",
   "type": "package",
+  "version": "1.0.0",
   "require": {
     "symfony/http-kernel": "~2.3|~3.0|~4.0"
   },
